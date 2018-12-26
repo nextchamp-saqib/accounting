@@ -29,6 +29,9 @@ import Toasted from 'vue-toasted';
 
   frappe.events.on('connect-database', async (filepath) => {
     await connectToLocalDatabase(filepath);
+    const accountingSettings = await frappe.getSingle('AccountingSettings');
+    const country = accountingSettings.country;
+
     if (country === "India") {
       frappe.models.Party = require('../models/doctype/Party/RegionalChanges.js')
     } else {
@@ -133,14 +136,18 @@ import Toasted from 'vue-toasted';
   }
 
   async function connectToLocalDatabase(filepath) {
-    frappe.login('Administrator');
-    frappe.db = new SQLite({
-      dbPath: filepath
-    });
-    await frappe.db.connect();
-    await frappe.db.migrate();
-    frappe.getSingle('SystemSettings');
-    await postStart();
+    try {
+      frappe.login('Administrator');
+      frappe.db = new SQLite({
+        dbPath: filepath
+      });
+      await frappe.db.connect();
+      await frappe.db.migrate();
+      frappe.getSingle('SystemSettings');
+      await postStart();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
 
