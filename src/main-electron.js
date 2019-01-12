@@ -26,7 +26,6 @@ import Toasted from 'vue-toasted';
   frappe.registerModels(coreModels);
   frappe.registerModels(models);
   frappe.fetch = window.fetch.bind();
-
   frappe.events.on('connect-database', async (filepath) => {
     await connectToLocalDatabase(filepath);
     const accountingSettings = await frappe.getSingle('AccountingSettings');
@@ -97,7 +96,6 @@ import Toasted from 'vue-toasted';
       for (const percent of gstPercents) {
         switch (type) {
           case 'Out of State':
-            console.log(type)
             await newTax.set({
               name: `${type}-${percent}`,
               details: [{
@@ -107,7 +105,6 @@ import Toasted from 'vue-toasted';
             })
             break;
           case 'In State':
-            console.log(type)
             await newTax.set({
               name: `${type}-${percent}`,
               details: [{
