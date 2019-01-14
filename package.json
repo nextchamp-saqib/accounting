@@ -55,7 +55,6 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
-    "electron": "^3.0.12",
     "file-saver": "^2.0.0",
     "frappejs": "github:frappe/frappejs",
     "nodemailer": "^4.7.0",

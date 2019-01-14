@@ -18,7 +18,7 @@ module.exports = {
         },
 
         {
-            fieldname: 'fullname',
+            fieldname: 'name',
             label: 'Name',
             fieldtype: 'Data',
             required: 1
@@ -53,9 +53,9 @@ module.exports = {
             formula: (doc) => {
                 let date = countryList[doc.country]["fiscal_year_start"].split("-");
                 var currentYear = (new Date).getFullYear();
-                let currentMonth = date[0] - 1 ;
+                let currentMonth = date[0] - 1;
                 let currentDate = date[1];
-                return new Date(currentYear,currentMonth,currentDate).toISOString().substr(0, 10);;
+                return new Date(currentYear, currentMonth, currentDate).toISOString().substr(0, 10);;
             },
             required: 1
         },
@@ -66,10 +66,10 @@ module.exports = {
             fieldtype: 'Date',
             formula: (doc) => {
                 let date = countryList[doc.country]["fiscal_year_end"].split("-");
-                var currentYear = (new Date).getFullYear() + 1 ;
-                let currentMonth = date[0] - 1 ;
+                var currentYear = (new Date).getFullYear() + 1;
+                let currentMonth = date[0] - 1;
                 let currentDate = date[1];
-                return new Date(currentYear,currentMonth,currentDate).toISOString().substr(0, 10);;
+                return new Date(currentYear, currentMonth, currentDate).toISOString().substr(0, 10);;
             },
             required: 1
         }
@@ -87,7 +87,7 @@ module.exports = {
             {
                 title: 'Add a Profile',
                 columns: [{
-                    fields: ['fullname', 'email']
+                    fields: ['email']
                 }]
             },
 

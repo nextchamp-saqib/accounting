@@ -1,15 +1,25 @@
 <template>
-    <div>
-        <div class="p-4">
-            <h4 class="pb-2">{{ reportConfig.title }}</h4>
-            <div class="col-12 text-right mt-4 mb-4">
-              <f-button primary @click="openExportWizard">{{ 'Export' }}</f-button>
-            </div>
-            <report-filters v-if="filtersExists" :filters="reportConfig.filterFields" :filterDefaults="filters" @change="getReportData"></report-filters>
-            <div class="pt-2" ref="datatable" v-once></div>
+  <div>
+    <page-header :breadcrumbs="breadcrumbs"/>
+    <div class="p-4">
+      <div class="row">
+        <h4 class="col-6 pb-4">{{ reportConfig.title }}</h4>
+        <div class="col-6 text-right">
+          <f-button primary @click="openExportWizard">{{ 'Export' }}</f-button>
         </div>
-        <not-found v-if="!reportConfig" />
+      </div>
+      
+      
+      <report-filters
+        v-if="filtersExists"
+        :filters="reportConfig.filterFields"
+        :filterDefaults="filters"
+        @change="getReportData"
+      ></report-filters>
+      <div class="pt-2" ref="datatable" v-once></div>
     </div>
+    <not-found v-if="!reportConfig"/>
+  </div>
 </template>
 <script>
 import DataTable from 'frappe-datatable';
@@ -17,7 +27,7 @@ import frappe from 'frappejs';
 import ReportFilters from 'frappejs/ui/pages/Report/ReportFilters';
 import utils from 'frappejs/client/ui/utils';
 import ExportWizard from '../../components/ExportWizard';
-
+import PageHeader from '@/components/PageHeader';
 
 export default {
   name: 'Report',
@@ -25,6 +35,18 @@ export default {
   computed: {
     filtersExists() {
       return (this.reportConfig.filterFields || []).length;
+    },
+    breadcrumbs() {
+      return [
+        {
+          title: 'Report',
+          route: '#/reportList'
+        },
+        {
+          title: this.reportConfig.title,
+          route: ''
+        }
+      ];
     }
   },
   methods: {
@@ -41,23 +63,24 @@ export default {
     async getReportDetails() {
       let { title, filterFields } = this.reportConfig;
       let [rows, columns] = await this.getReportData(filterFields || []);
-      let columnData = columns.map((column)=>{
+      let columnData = columns.map(column => {
         return {
           id: column.id,
           content: column.content,
           checked: true
-      }});
+        };
+      });
       // console.log(columnData);
       return {
         title: title,
         rows: rows,
         columnData: columnData
-      }
+      };
     },
     async getReportData(filters) {
       let data = await frappe.call({
-          method: this.reportConfig.method,
-          args: filters
+        method: this.reportConfig.method,
+        args: filters
       });
 
       let rows, columns;
@@ -79,8 +102,8 @@ export default {
         columns = this.getColumns();
       }
 
-      for(let column of columns) {
-         column.editable = false;
+      for (let column of columns) {
+        column.editable = false;
       }
 
       if (this.datatable) {
@@ -91,7 +114,7 @@ export default {
           data: rows
         });
       }
-      return [rows,columns];
+      return [rows, columns];
     },
     getColumns(data) {
       const columns = this.reportConfig.getColumns(data);
@@ -99,7 +122,8 @@ export default {
     }
   },
   components: {
-    ReportFilters
+    ReportFilters,
+    PageHeader
   }
 };
 </script>

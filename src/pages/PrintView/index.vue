@@ -1,6 +1,6 @@
 <template>
   <div class="bg-light">
-    <page-header :title="doctype"/>
+    <page-header :breadcrumbs="breadcrumbs"/>
     <div class="row no-gutters">
       <div v-if="showInvoiceCustomizer" class="col-3 mt-4 mx-auto"></div>
       <div class="col-8 mx-auto text-right mt-4">
@@ -62,6 +62,20 @@ export default {
   async mounted() {
     this.doc = await frappe.getDoc(this.doctype, this.name);
     this.printComponent = printComponents[this.doctype];
+  },
+  computed: {
+    breadcrumbs() {
+      return [
+        {
+          title: this.doctype,
+          route: '#/list/' + this.doctype
+        },
+        {
+          title: this.name,
+          route: ''
+        }
+      ];
+    }
   },
   methods: {
     makePDF() {

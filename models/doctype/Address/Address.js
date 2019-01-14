@@ -2,7 +2,7 @@ module.exports = {
     "name": "Address",
     "doctype": "DocType",
     "isSingle": 0,
-    "titleField": "addressTitle",
+    "titleField": "name",
     "keywordFields": [
         "addressTitle"
     ],
@@ -11,23 +11,6 @@ module.exports = {
     },
     "naming": "autoincrement",
     "fields": [
-        {
-            "fieldname": "addressTitle",
-            "label": "Address Title",
-            "fieldtype": "Data",
-            "required": 1
-        },
-        {
-            "fieldname": "addressType",
-            "label": "Address Type",
-            "fieldtype": "Select",
-            "options": [
-                "Billing", "Shipping", "Office",
-                "Personal", "Plant", "Postal",
-                "Shop", "Subsidary", "Warehouse",
-                "Current", "Permanent", "Other"
-            ]
-        },
         {
             "fieldname": "addressLine1",
             "label": "Address Line 1",
@@ -60,31 +43,6 @@ module.exports = {
             "fieldname": "postalCode",
             "label": "Postal Code",
             "fieldtype": "Data"
-        },
-        {
-            "fieldname": "emailAddress",
-            "label": "Email Address",
-            "fieldtype": "Data"
-        },
-        {
-            "fieldname": "phone",
-            "label": "Phone",
-            "fieldtype": "Data"
-        },
-        {
-            "fieldname": "fax",
-            "label": "Fax",
-            "fieldtype": "Data"
-        },
-        {
-            "fieldname": "isPreferredBilling",
-            "label": "Preferred Billing Address",
-            "fieldtype": "Check"
-        },
-        {
-            "fieldname": "isShippingBilling",
-            "label": "Preferred Shipping Address",
-            "fieldtype": "Check"
         }
     ],
 
@@ -95,7 +53,7 @@ module.exports = {
     // },
 
     listSettings: {
-        getFields(list)  {
+        getFields(list) {
             return ['addressTitle', 'addressType'];
         },
         getRowHTML(list, data) {
@@ -106,20 +64,23 @@ module.exports = {
     layout: [
         // section 1
         {
-            columns: [
-                {
-                    fields: [ 
-                        "addressTitle", "addressType", "addressLine1",
-                        "addressLine2", "city", "country", "state",
-                        "postalCode"
-                    ]
-                },
-                {
-                    fields: [
-                        "emailAddress", "phone", "fax", "isPreferredBilling", "isShippingBilling"
-                    ]
-                }
-            ]
+            columns: [{
+                fields: ['addressLine1', 'addressLine2']
+            }],
+        },
+        {
+            columns: [{
+                fields: ['country']
+            }, {
+                fields: ['state']
+            }]
+        },
+        {
+            columns: [{
+                fields: ['city']
+            }, {
+                fields: ['postalCode']
+            }]
         }
     ]
 }

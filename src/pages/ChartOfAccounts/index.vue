@@ -22,7 +22,7 @@ export default {
     this.settings = frappe.getMeta(this.doctype).treeSettings;
     this.root = {
       label: await this.settings.getRootLabel(),
-      balance: 'Net Worth'
+      balance: ''
     };
   },
   methods: {
